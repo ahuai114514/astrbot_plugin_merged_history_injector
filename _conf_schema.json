@@ -1,0 +1,38 @@
+{
+  "enabled": {
+    "description": "是否启用合并转发历史注入",
+    "type": "bool",
+    "default": true
+  },
+  "debug_logging": {
+    "description": "是否输出调试日志",
+    "type": "bool",
+    "hint": "开启后会打印引用消息结构、转发 ID 和注入条数，便于适配不同 QQ 消息格式。",
+    "default": false
+  },
+  "processing_message": {
+    "description": "正式回复前发送的提示语",
+    "type": "string",
+    "default": "已导入引用聊天记录"
+  },
+  "header_text": {
+    "description": "注入历史前的头部说明",
+    "type": "string",
+    "default": ""
+  },
+  "max_depth": {
+    "description": "递归展开允许的最大嵌套层数",
+    "type": "int",
+    "default": 4
+  },
+  "max_nodes": {
+    "description": "单次最多解析的节点数",
+    "type": "int",
+    "default": 80
+  },
+  "max_chars": {
+    "description": "回退文本的最大字符数",
+    "type": "int",
+    "default": 12000
+  }
+}
