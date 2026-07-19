@@ -26,7 +26,7 @@ DEFAULT_PROCESSING_MESSAGE = "已导入引用聊天记录"
 DEFAULT_HEADER_TEXT = ""
 
 
-@register(PLUGIN_ID, "Codex", "将引用的 QQ 合并转发记录注入为 contexts 历史", "1.0.0")
+@register(PLUGIN_ID, "ahuai", "将引用的 QQ 合并转发记录注入为 contexts 历史", "1.0.0")
 class MergedHistoryInjectorPlugin(Star):
     def __init__(self, context: Context, config: AstrBotConfig | None = None) -> None:
         super().__init__(context)
