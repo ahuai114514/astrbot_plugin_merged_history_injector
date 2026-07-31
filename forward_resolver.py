@@ -49,6 +49,7 @@ NESTED_ATTRS = (
     "merged_messages",
 )
 PAYLOAD_NESTED_KEYS = ("messages", "msgs", "data", "records", "children", "content", "message")
+IMPORT_COMMAND = "导入聊天记录"
 
 
 class ForwardResolver:
@@ -80,10 +81,32 @@ class ForwardResolver:
         logger.info("[%s] debug raw_message=%r", self.plugin_id, raw_message)
 
     def should_process_event(self, event: Any) -> bool:
-        if not self.has_explicit_at_bot(event):
+        if not self.is_import_command(event):
             return False
         quoted = self.extract_quoted_message(event)
         return quoted is not None and self.has_forward_component(quoted)
+
+    def is_import_command(self, event: Any) -> bool:
+        chains = self.extract_message_chains(getattr(event, "message_obj", None))
+        bot_self_id = self.extract_bot_self_id(event)
+        at_components = [component for component in chains if isinstance(component, Comp.At)]
+        if not bot_self_id or not any(self._at_target(component) == bot_self_id for component in at_components):
+            return False
+
+        plain_text = "".join(
+            getattr(component, "text", "")
+            for component in chains
+            if isinstance(component, Comp.Plain)
+        )
+        normalized = "".join(plain_text.split())
+        return normalized == IMPORT_COMMAND
+
+    def _at_target(self, component: Any) -> str:
+        for attr in ("qq", "user_id", "target", "id"):
+            value = getattr(component, attr, None)
+            if value is not None:
+                return str(value).strip()
+        return ""
 
     def extract_quoted_message(self, event: Any) -> Any | None:
         message_obj = getattr(event, "message_obj", None)
@@ -637,10 +660,6 @@ class ForwardResolver:
         elif isinstance(value, Iterable) and not isinstance(value, (str, bytes)):
             nested.extend(list(value))
         return nested
-
-    def has_explicit_at_bot(self, event: Any) -> bool:
-        chains = self.extract_message_chains(getattr(event, "message_obj", None))
-        return bool(chains) and any(isinstance(component, Comp.At) for component in chains)
 
     def truncate_text(self, text: str) -> str:
         if len(text) > self.max_chars:
