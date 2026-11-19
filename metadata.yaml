@@ -1,8 +1,8 @@
 name: astrbot_plugin_merged_history_injector
-display_name: merged_history_injector
+display_name: 合并转发记录导入
 short_desc: 通过明确指令导入引用的 QQ 合并转发记录
 desc: 引用 QQ 合并转发并发送“@bot 导入聊天记录”后，将记录注入当前对话历史。
-version: v1.0.1
+version: v1.0.2
 author: ahuai
 repo: https://github.com/ahuai114514/astrbot_plugin_merged_history_injector
 astrbot_version: ">=4.24,<5"

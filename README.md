@@ -1,4 +1,4 @@
-# astrbot_plugin_merged_history_injector
+# 合并转发记录导入
 
 该项目由 Codex 编写。
 
